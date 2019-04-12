@@ -14,8 +14,8 @@ dataset_name = 'nyt'
 # dataset_dir = os.path.join('./data', dataset_name)
 
 dataset_dir='./data'
-if not os.path.isdir(dataset_dir):
-    raise Exception("[ERROR] Dataset dir %s doesn't exist!" % (dataset_dir))
+# if not os.path.isdir(dataset_dir):
+#     raise Exception("[ERROR] Dataset dir %s doesn't exist!" % (dataset_dir))
 
 # The first 3 parameters are train / test data file name, word embedding file name and relation-id mapping file name respectively.
 train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'train.json'), 
@@ -103,7 +103,13 @@ class model(nrekit.framework.re_model):
 
 model.encoder='pcnn'
 model.selector='att'
-auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
+'''is not a valid checkpoint: ./checkpoint/nyt_pcnn_att'''
+checkpoint_path=  tf.train.latest_checkpoint('./checkpoint/')
+# auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
+auc, pred_result = framework.test(model, ckpt=checkpoint_path
+                                  , return_result=True)
+
+
 
 with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
     json.dump(pred_result, outfile)
