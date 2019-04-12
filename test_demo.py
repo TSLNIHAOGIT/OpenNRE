@@ -1,3 +1,6 @@
+import sys,os
+sys.path.insert(0,os.path.abspath(os.path.join(os.path.dirname(__file__),'../..')))
+
 import nrekit
 import numpy as np
 import tensorflow as tf
@@ -6,9 +9,11 @@ import os
 import json
 
 dataset_name = 'nyt'
-if len(sys.argv) > 1:
-    dataset_name = sys.argv[1]
-dataset_dir = os.path.join('./data', dataset_name)
+# if len(sys.argv) > 1:
+#     dataset_name = sys.argv[1]
+# dataset_dir = os.path.join('./data', dataset_name)
+
+dataset_dir='./data'
 if not os.path.isdir(dataset_dir):
     raise Exception("[ERROR] Dataset dir %s doesn't exist!" % (dataset_dir))
 
@@ -91,11 +96,13 @@ class model(nrekit.framework.re_model):
             print("Finish calculating")
         return weights_table
 
-if len(sys.argv) > 2:
-    model.encoder = sys.argv[2]
-if len(sys.argv) > 3:
-    model.selector = sys.argv[3]
+# if len(sys.argv) > 2:
+#     model.encoder = sys.argv[2]
+# if len(sys.argv) > 3:
+#     model.selector = sys.argv[3]
 
+model.encoder='pcnn'
+model.selector='att'
 auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
 
 with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
