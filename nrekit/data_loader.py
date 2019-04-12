@@ -24,7 +24,7 @@ class npy_data_loader(file_data_loader):
     def __iter__(self):
         return self
 
-    def __init__(self, data_dir, prefix, mode, word_vec_npy='vec.npy', shuffle=True, max_length=120, batch_size=160):
+    def __init__(self, data_dir, prefix, mode, word_vec_npy='vec.npy', shuffle=True, max_length=120, batch_size=16):
         if not os.path.isdir(data_dir):
             raise Exception("[ERROR] Data dir doesn't exist!")
         self.mode = mode
@@ -382,7 +382,7 @@ class json_file_data_loader(file_data_loader):
             print("Finish pre-processing")     
 
             print("Storing processed files...")
-            name_prefix = ‘.’.join(os.path.split(file_name)[-1].split('.')[:-1])
+            name_prefix = '.'.join(os.path.split(file_name)[-1].split('.')[:-1])
             word_vec_name_prefix = '.'.join(os.path.split(word_vec_file_name)[-1].split('.')[:-1])
             processed_data_dir = '_processed_data'
             if not os.path.isdir(processed_data_dir):

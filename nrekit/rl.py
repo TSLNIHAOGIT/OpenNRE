@@ -1,3 +1,5 @@
+import sys,os
+sys.path.insert(0,os.path.abspath(os.path.join(os.path.dirname(__file__),'../..')))
 import tensorflow as tf
 import os
 import sklearn.metrics
@@ -5,8 +7,8 @@ import numpy as np
 import sys
 import math
 import time
-import framework
-import network
+from OpenNRE.nrekit import framework
+from OpenNRE.nrekit import network
 
 class policy_agent(framework.re_model):
     def __init__(self, train_data_loader, batch_size, max_length=120):
@@ -30,7 +32,7 @@ class policy_agent(framework.re_model):
         return self._test_logit
 
 class rl_re_framework(framework.re_framework):
-    def __init__(self, train_data_loader, test_data_loader, max_length=120, batch_size=160):
+    def __init__(self, train_data_loader, test_data_loader, max_length=120, batch_size=16):
         framework.re_framework.__init__(self, train_data_loader, test_data_loader, max_length, batch_size)
 
     def agent_one_step(self, sess, agent_model, batch_data, run_array, weights=1):

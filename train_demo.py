@@ -5,9 +5,11 @@ import sys
 import os
 
 dataset_name = 'nyt'
-if len(sys.argv) > 1:
-    dataset_name = sys.argv[1]
-dataset_dir = os.path.join('./data', dataset_name)
+# if len(sys.argv) > 1:
+#     dataset_name = sys.argv[1]
+# dataset_dir = os.path.join('./data/', dataset_name)
+
+dataset_dir='./data'
 if not os.path.isdir(dataset_dir):
     raise Exception("[ERROR] Dataset dir %s doesn't exist!" % (dataset_dir))
 
@@ -94,14 +96,23 @@ class model(nrekit.framework.re_model):
             print("Finish calculating")
         return weights_table
 
-use_rl = False
-if len(sys.argv) > 2:
-    model.encoder = sys.argv[2]
-if len(sys.argv) > 3:
-    model.selector = sys.argv[3]
-if len(sys.argv) > 4:
-    if sys.argv[4] == 'rl':
-        use_rl = True
+# use_rl = False
+# if len(sys.argv) > 2:
+#     model.encoder = sys.argv[2]
+# if len(sys.argv) > 3:
+#     model.selector = sys.argv[3]
+# if len(sys.argv) > 4:
+#     if sys.argv[4] == 'rl':
+#         use_rl = True
+
+
+
+#python train_demo.py nyt pcnn att rl
+
+model.encoder='pcnn'
+model.selector='att'
+use_rl = True
+
 
 if use_rl:
     rl_framework = nrekit.rl.rl_re_framework(train_loader, test_loader)
