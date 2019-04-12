@@ -10,7 +10,9 @@ import os
 result_dir = './test_result'
 
 def main():
-    models = sys.argv[1:]
+    'nyt_pcnn_att_rl_x'
+    # models = sys.argv[1:]
+    models=['nyt_pcnn_att_rl']
     for model in models:
         x = np.load(os.path.join(result_dir, model +'_x' + '.npy')) 
         y = np.load(os.path.join(result_dir, model + '_y' + '.npy'))
