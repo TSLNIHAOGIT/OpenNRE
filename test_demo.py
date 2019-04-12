@@ -31,6 +31,19 @@ test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
 
 framework = nrekit.framework.re_framework(train_loader, test_loader)
 
+
+class MyEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        """
+        只要检查到了是bytes类型的数据就把它转为str类型
+        :param obj:
+        :return:
+        """
+        if isinstance(obj, bytes):
+            return str(obj, encoding='utf-8')
+        return json.JSONEncoder.default(self, obj)
+
 class model(nrekit.framework.re_model):
     encoder = "pcnn"
     selector = "att"
@@ -112,5 +125,5 @@ auc, pred_result = framework.test(model, ckpt=checkpoint_path
 
 
 with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
-    json.dump(pred_result, outfile)
+    json.dump(pred_result, outfile,cls=MyEncoder)
 
