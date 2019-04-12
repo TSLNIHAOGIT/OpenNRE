@@ -7,8 +7,8 @@ import numpy as np
 import sys
 import math
 import time
-from OpenNRE.nrekit import framework
-from OpenNRE.nrekit import network
+from nrekit import framework
+from nrekit import network
 
 class policy_agent(framework.re_model):
     def __init__(self, train_data_loader, batch_size, max_length=120):
