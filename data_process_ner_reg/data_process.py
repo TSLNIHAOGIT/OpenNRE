@@ -44,7 +44,9 @@ def data_process(rel=None):
 import re
 def multiple_replace(text, adict):
      rx = re.compile('|'.join(map(re.escape, adict)))
+     # print('rx',rx)
      def one_xlat(match):
+           print('match',match.group(0))
            return adict[match.group(0)]
      return rx.sub(one_xlat, text)
 
@@ -53,9 +55,10 @@ def entity_single_label(entity_single,entity_type):
          each_list=entity_single.split()
          entity_length=len(each_list)
          if entity_length==1:
-             entity_new='{}___S-{}'.format(entity_single,entity_type)
+             #单个词成为实体的空格要特殊处理
+             entity_new='{}___S-{} '.format(entity_single.rstrip(),entity_type)
          elif entity_length==2:
-             entity_new='{}___B-{} {}___E-{}'.format(each_list[0],entity_type,each_list[1],entity_type)
+             entity_new='{}___B-{} {}___E-{} '.format(each_list[0],entity_type,each_list[1],entity_type)
          else:
              each_list_new=[]
              for index, each in enumerate(each_list):
@@ -64,7 +67,7 @@ def entity_single_label(entity_single,entity_type):
                  elif index<entity_length-1:
                      each_list_new.append('{}___I-{}'.format(each_list[index],entity_type))
                  else:
-                     each_list_new.append('{}___E-{}'.format(each_list[index],entity_type))
+                     each_list_new.append('{}___E-{} '.format(each_list[index],entity_type))
              entity_new=' '.join(each_list_new)
          return entity_new
 
@@ -152,7 +155,7 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
-    with open('../data/train.json') as f:
+    with open('../data/test.json') as f:
         json_data = json.load(f)
         for each in json_data:
             relation = each['relation']
@@ -173,9 +176,11 @@ def construct_Entity_label_Bioes():
             #     continue
             # print(entpair_label(head_Entity, tail_Entity, relation))
 
-            entity_dict=entpair_label(head_Entity, tail_Entity, relation)
+            #将实体后的空格加上，替换是才不会出错
+            entity_dict=entpair_label('{} '.format(head_Entity), '{} '.format(tail_Entity), relation)
             new_sentence=multiple_replace(sentence, entity_dict)
-            print('sentence',new_sentence)
+            print('sentence', sentence)
+            print('new_sentence',new_sentence)
             for each in new_sentence.split(' '):
                 if '___' not in each :
                     res='{} O'.format(each)
@@ -183,12 +188,12 @@ def construct_Entity_label_Bioes():
                 else:
                     res=each.replace('___',' ')
                 print(res,)
-                with open(save_path+'train.txt','a+',encoding='utf8') as f_save:
-                    if res!='. O':
-                        f_save.write(res+'\n')#'\r\n是换两行了
-                    else:
-                        f_save.write(res+'\n')
-                        f_save.write('\n')
+                # with open(save_path+'test.txt','a+',encoding='utf8') as f_save:
+                #     if res!='. O':
+                #         f_save.write(res+'\n')#'\r\n是换两行了
+                #     else:
+                #         f_save.write(res+'\n')
+                #         f_save.write('\n')
             # break
 
 
@@ -214,6 +219,9 @@ if __name__=='__main__':
     # data_process()
     # entity_single='amy like dogs very much'
     # print(entity_single_label(entity_single,'LOC'))
+
+    # sentence='Indeed , Brazi many Brazilians blame Bolivia and its president ,pres  Evo Morales , for much of the energy squeeze their country is beginning to feel , in the form of higher prices for natural gas and uncertainties about future supplies '
+    # print(multiple_replace(sentence,{'Brazi ':'Brazi-loc ','pres ':'pres_s '}))
 
     construct_Entity_label_Bioes()
     # rel_process()
