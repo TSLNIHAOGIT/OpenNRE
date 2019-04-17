@@ -46,7 +46,7 @@ def multiple_replace(text, adict):
      rx = re.compile('|'.join(map(re.escape, adict)))
      # print('rx',rx)
      def one_xlat(match):
-           print('match',match.group(0))
+           # print('match:',match.group(0))
            return adict[match.group(0)]
      return rx.sub(one_xlat, text)
 
@@ -188,31 +188,13 @@ def construct_Entity_label_Bioes():
                 else:
                     res=each.replace('___',' ')
                 print(res,)
-                # with open(save_path+'test.txt','a+',encoding='utf8') as f_save:
-                #     if res!='. O':
-                #         f_save.write(res+'\n')#'\r\n是换两行了
-                #     else:
-                #         f_save.write(res+'\n')
-                #         f_save.write('\n')
+                with open(save_path+'test.txt','a+',encoding='utf8') as f_save:
+                    if res!='. O':
+                        f_save.write(res+'\n')#'\r\n是换两行了
+                    else:
+                        f_save.write(res+'\n')
+                        f_save.write('\n')
             # break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__=='__main__':
     # relat_process()
