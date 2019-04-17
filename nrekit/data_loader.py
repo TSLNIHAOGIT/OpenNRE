@@ -240,6 +240,7 @@ class json_file_data_loader(file_data_loader):
             print("Finish loading")
             
             # Eliminate case sensitive
+            #消除区分大小写
             if not case_sensitive:
                 print("Elimiating case sensitive problem...")
                 for i in range(len(self.ori_data)):
