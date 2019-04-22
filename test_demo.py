@@ -25,7 +25,8 @@ train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir
                                                         shuffle=True)
 test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
                                                                     # 'label_test_relation.json',
-                                                                    'test.json'
+                                                                    'test-reading-friendly.json',
+                                                                    # 'test.json'
                                                                     ),
                                                        os.path.join(dataset_dir, 'word_vec.json'),
                                                        os.path.join(dataset_dir, 'rel2id.json'), 
