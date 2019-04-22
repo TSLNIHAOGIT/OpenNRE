@@ -4,6 +4,11 @@ import os
 save_path='../data/nre_data/'
 all_train_relations={'/location/us_county/county_seat', '/business/company/major_shareholders', '/people/person/children', '/film/film_festival/location', '/location/cn_province/capital', '/business/person/company', '/business/company_advisor/companies_advised', '/location/in_state/administrative_capital', '/film/film/featured_film_locations', '/business/business_location/parent_company', '/people/person/place_of_birth', '/business/company/advisors', '/business/company_shareholder/major_shareholder_of', '/people/person/nationality', '/location/us_state/capital', '/location/country/capital', '/business/company/founders', '/people/family/country', '/people/profession/people_with_this_profession', '/business/company/industry', '/sports/sports_team_location/teams', '/location/in_state/legislative_capital', '/broadcast/content/location', '/people/ethnicity/includes_groups', '/location/it_region/capital', '/people/ethnicity/people', '/people/place_of_interment/interred_here', '/location/jp_prefecture/capital', '/location/br_state/capital', '/location/in_state/judicial_capital', '/business/company/locations', '/people/ethnicity/included_in_group', '/broadcast/producer/location', '/people/person/religion', '/people/deceased_person/place_of_burial', '/location/mx_state/capital', '/sports/sports_team/location', '/time/event/locations', '/location/neighborhood/neighborhood_of', '/location/location/contains', '/location/administrative_division/country', 'NA', '/film/film_location/featured_in_films', '/people/ethnicity/geographic_distribution', '/people/family/members', '/business/shopping_center/owner', '/people/deceased_person/place_of_death', '/people/person/ethnicity', '/location/country/administrative_divisions', '/location/de_state/capital', '/location/province/capital', '/people/person/profession', '/location/fr_region/capital', '/business/company/place_founded', '/business/shopping_center_owner/shopping_centers_owned', '/people/person/place_lived'}
 all_test_relations={'/business/person/company', '/location/province/capital', '/location/country/languages_spoken', '/people/person/place_lived', '/location/neighborhood/neighborhood_of', '/location/us_state/capital', '/business/company_advisor/companies_advised', '/location/br_state/capital', '/base/locations/countries/states_provinces_within', '/people/person/children', '/business/company/major_shareholders', '/location/country/administrative_divisions', '/people/place_of_interment/interred_here', '/film/film/featured_film_locations', '/business/company/advisors', '/business/company/place_founded', '/location/administrative_division/country', '/location/location/contains', '/location/country/capital', '/people/ethnicity/geographic_distribution', '/sports/sports_team/location', '/film/film_location/featured_in_films', '/business/company/founders', 'NA', '/people/person/ethnicity', '/time/event/locations', '/location/us_county/county_seat', '/people/person/place_of_birth', '/people/deceased_person/place_of_burial', '/people/person/nationality', '/people/deceased_person/place_of_death', '/people/person/religion'}
+
+
+
+
+
 def rel_process():
     with open('../data/rel2id.json') as f:
         data_json=json.load(f)
@@ -16,13 +21,12 @@ def rel_process():
 
 
 def data_process(rel=None):
-    rel_data=list(relat_process())
-    with open('../data/train.json') as f:
+    with open('../data/test.json') as f:
         json_data=json.load(f)
         times=0
         for each in json_data:
             #'/people/place_of_interment/interred_here','/time/event/locations',
-            if each['relation'] in ['/business/shopping_center_owner/shopping_centers_owned']:#rel_data:
+            if each['relation'] in ['/people/person/place_of_birth']:#rel_data:
                 # rel_data.remove(each['relation'])
                 print('times:',times)
                 print('sentence::',each['sentence'])
@@ -155,7 +159,7 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
-    with open('../data/test.json') as f:
+    with open('../data/train.json') as f:
         json_data = json.load(f)
         for each in json_data:
             relation = each['relation']
@@ -184,11 +188,10 @@ def construct_Entity_label_Bioes():
             for each in new_sentence.split(' '):
                 if '___' not in each :
                     res='{} O'.format(each)
-
                 else:
                     res=each.replace('___',' ')
                 print(res,)
-                with open(save_path+'test.txt','a+',encoding='utf8') as f_save:
+                with open(save_path+'train.txt','a+',encoding='utf8',errors='ignore') as f_save:
                     if res!='. O':
                         f_save.write(res+'\n')#'\r\n是换两行了
                     else:
@@ -198,12 +201,13 @@ def construct_Entity_label_Bioes():
 
 if __name__=='__main__':
     # relat_process()
-    # data_process()
+    data_process()
     # entity_single='amy like dogs very much'
     # print(entity_single_label(entity_single,'LOC'))
 
     # sentence='Indeed , Brazi many Brazilians blame Bolivia and its president ,pres  Evo Morales , for much of the energy squeeze their country is beginning to feel , in the form of higher prices for natural gas and uncertainties about future supplies '
     # print(multiple_replace(sentence,{'Brazi ':'Brazi-loc ','pres ':'pres_s '}))
 
-    construct_Entity_label_Bioes()
+    #实体标注程序
+    # construct_Entity_label_Bioes()
     # rel_process()

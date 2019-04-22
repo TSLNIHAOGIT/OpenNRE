@@ -4,6 +4,7 @@ import tensorflow as tf
 import sys
 import os
 
+# sys.path.insert(0,os.path.abspath(os.path.join(os.path.dirname(__file__),'..')))
 dataset_name = 'nyt'
 # if len(sys.argv) > 1:
 #     dataset_name = sys.argv[1]
