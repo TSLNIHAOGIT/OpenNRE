@@ -324,6 +324,7 @@ class re_framework:
 
         for i, batch_data in enumerate(self.test_data_loader):
             iter_logit = self.one_step(self.sess, model, batch_data, [model.test_logit()])[0]
+            print('iter_logit[0:5]',iter_logit[0:5])
             iter_output = iter_logit.argmax(-1)
             # iter_correct = (iter_output == batch_data['rel']).sum()
             # iter_not_na_correct = np.logical_and(iter_output == batch_data['rel'], batch_data['rel'] != 0).sum()
