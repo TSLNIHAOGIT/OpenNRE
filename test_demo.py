@@ -127,7 +127,7 @@ auc, pred_result = framework.test(model, ckpt=checkpoint_path
                                   , return_result=True)
 
 
-
-with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
-    json.dump(pred_result, outfile,cls=MyEncoder)
+#先不保存结果看一下
+# with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
+#     json.dump(pred_result, outfile,cls=MyEncoder)
 
