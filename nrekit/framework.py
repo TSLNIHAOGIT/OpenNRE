@@ -253,6 +253,8 @@ class re_framework:
         for i, batch_data in enumerate(self.test_data_loader):
             iter_logit = self.one_step(self.sess, model, batch_data, [model.test_logit()])[0]
             iter_output = iter_logit.argmax(-1)
+            print('iter_output:',iter_output.shape,iter_output)
+            
             iter_correct = (iter_output == batch_data['rel']).sum()
             iter_not_na_correct = np.logical_and(iter_output == batch_data['rel'], batch_data['rel'] != 0).sum()
             tot_correct += iter_correct
@@ -287,3 +289,75 @@ class re_framework:
             return auc
         else:
             return (auc, pred_result)
+
+    def predict(self,
+                model,
+                ckpt=None,
+                return_result=False,
+                mode=MODE_BAG):
+        if mode == re_framework.MODE_BAG:
+            return self.__predict_bag__(model, ckpt=ckpt, return_result=return_result)
+        elif mode == re_framework.MODE_INS:
+            raise NotImplementedError
+        else:
+            raise NotImplementedError
+
+    def __predict_bag__(self, model, ckpt=None, return_result=False):
+        print("Predicting...")
+        if self.sess == None:
+            self.sess = tf.Session()
+        model = model(self.test_data_loader, self.test_data_loader.batch_size, self.test_data_loader.max_length)
+        if not ckpt is None:
+            saver = tf.train.Saver()
+            saver.restore(self.sess, ckpt)
+
+        # tot_correct = 0
+        # tot_not_na_correct = 0
+        tot = 0
+        tot_not_na = 0
+        entpair_tot = 0
+        test_result = []
+        pred_result = []
+
+        for i, batch_data in enumerate(self.test_data_loader):
+            iter_logit = self.one_step(self.sess, model, batch_data, [model.test_logit()])[0]
+            iter_output = iter_logit.argmax(-1)
+            # iter_correct = (iter_output == batch_data['rel']).sum()
+            # iter_not_na_correct = np.logical_and(iter_output == batch_data['rel'], batch_data['rel'] != 0).sum()
+            # tot_correct += iter_correct
+            # tot_not_na_correct += iter_not_na_correct
+            # tot += batch_data['rel'].shape[0]
+            # tot_not_na += (batch_data['rel'] != 0).sum()
+            # if tot_not_na > 0:
+            #     sys.stdout.write("[TEST] step %d | not NA accuracy: %f, accuracy: %f\r" % (
+            #         i, float(tot_not_na_correct) / tot_not_na, float(tot_correct) / tot))
+            #     sys.stdout.flush()
+            for idx in range(len(iter_logit)):
+                for rel in range(1, self.test_data_loader.rel_tot):
+
+                    test_result.append({'score': iter_logit[idx][rel], 'flag': batch_data['multi_rel'][idx][rel]})
+                    if batch_data['entpair'][idx] != "None#None":
+                        pred_result.append(
+                            {'score': float(iter_logit[idx][rel]),
+                             'entpair': batch_data['entpair'][idx].encode('utf-8'),
+                             'relation': rel})
+                entpair_tot += 1
+        sorted_test_result = sorted(test_result, key=lambda x: x['score'])
+        prec = []
+        recall = []
+        correct = 0
+        for i, item in enumerate(sorted_test_result[::-1]):
+            correct += item['flag']
+            prec.append(float(correct) / (i + 1))
+            recall.append(float(correct) / self.test_data_loader.relfact_tot)
+        auc = sklearn.metrics.auc(x=recall, y=prec)
+        print("\n[TEST] auc: {}".format(auc))
+        print("Finish testing")
+        self.cur_prec = prec
+        self.cur_recall = recall
+
+        if not return_result:
+            return auc
+        else:
+            return (auc, pred_result)
+

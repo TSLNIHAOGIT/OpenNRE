@@ -1,4 +1,6 @@
 # OpenNRE
+###换数据时要删除_processed_data文件夹，让其重新生成
+
 
 An open-source framework for neural relation extraction.
 
