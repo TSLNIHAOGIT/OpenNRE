@@ -45,6 +45,7 @@ class npy_data_loader(file_data_loader):
             self.scope[i][1] += 1
 
         self.instance_tot = self.data_word.shape[0]
+        ##关系类别
         self.rel_tot = 53
 
         if self.mode == self.MODE_INSTANCE:

@@ -122,12 +122,17 @@ model.encoder='pcnn'
 model.selector='att'
 '''is not a valid checkpoint: ./checkpoint/nyt_pcnn_att'''
 checkpoint_path=  tf.train.latest_checkpoint('./checkpoint/')
-# auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
-auc, pred_result = framework.test(model, ckpt=checkpoint_path
+
+if __name__=='__main__':
+    # auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
+    # auc, pred_result = framework.test(model, ckpt=checkpoint_path
+    #                               , return_result=True)
+
+    pred_result=framework.predict(model, ckpt=checkpoint_path
                                   , return_result=True)
 
 
-#先不保存结果看一下
-# with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
-#     json.dump(pred_result, outfile,cls=MyEncoder)
+    #先不保存结果看一下
+    with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
+        json.dump(pred_result, outfile,cls=MyEncoder)
 

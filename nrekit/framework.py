@@ -252,7 +252,8 @@ class re_framework:
          
         for i, batch_data in enumerate(self.test_data_loader):
             iter_logit = self.one_step(self.sess, model, batch_data, [model.test_logit()])[0]
-            iter_output = iter_logit.argmax(-1)
+            #batchsize*class
+            iter_output = iter_logit.argmax(-1)#此时沿1轴最值索引#batchsize
             if i<3:
                 print('iter_logit:',iter_logit.shape,iter_logit)
 
@@ -267,6 +268,7 @@ class re_framework:
                 sys.stdout.flush()
             for idx in range(len(iter_logit)):
                 for rel in range(1, self.test_data_loader.rel_tot):
+                    #self.test_data_loader.rel_tot=53共53个类别，0类是NA；1-52是非NA
 
                     test_result.append({'score': iter_logit[idx][rel], 'flag': batch_data['multi_rel'][idx][rel]})
                     if batch_data['entpair'][idx] != "None#None":
@@ -314,10 +316,10 @@ class re_framework:
 
         # tot_correct = 0
         # tot_not_na_correct = 0
-        tot = 0
-        tot_not_na = 0
-        entpair_tot = 0
-        test_result = []
+        # tot = 0
+        # tot_not_na = 0
+        # entpair_tot = 0
+        # test_result = []
         pred_result = []
 
         for i, batch_data in enumerate(self.test_data_loader):
@@ -334,31 +336,33 @@ class re_framework:
             #         i, float(tot_not_na_correct) / tot_not_na, float(tot_correct) / tot))
             #     sys.stdout.flush()
             for idx in range(len(iter_logit)):
-                for rel in range(1, self.test_data_loader.rel_tot):
+                # for rel in range(1, self.test_data_loader.rel_tot):
 
-                    test_result.append({'score': iter_logit[idx][rel], 'flag': batch_data['multi_rel'][idx][rel]})
+                    # test_result.append({'score': iter_logit[idx][iter_output[idx]], 'flag': batch_data['multi_rel'][idx][iter_output[idx]]})
                     if batch_data['entpair'][idx] != "None#None":
                         pred_result.append(
-                            {'score': float(iter_logit[idx][rel]),
+                            {'score': float(iter_logit[idx][iter_output[idx]]),
                              'entpair': batch_data['entpair'][idx].encode('utf-8'),
-                             'relation': rel})
-                entpair_tot += 1
-        sorted_test_result = sorted(test_result, key=lambda x: x['score'])
-        prec = []
-        recall = []
-        correct = 0
-        for i, item in enumerate(sorted_test_result[::-1]):
-            correct += item['flag']
-            prec.append(float(correct) / (i + 1))
-            recall.append(float(correct) / self.test_data_loader.relfact_tot)
-        auc = sklearn.metrics.auc(x=recall, y=prec)
-        print("\n[TEST] auc: {}".format(auc))
-        print("Finish testing")
-        self.cur_prec = prec
-        self.cur_recall = recall
+                             'relation': iter_output[idx]})
+                # entpair_tot += 1
+        # sorted_test_result = sorted(test_result, key=lambda x: x['score'])
+        # prec = []
+        # recall = []
+        # correct = 0
+        # for i, item in enumerate(sorted_test_result[::-1]):
+        #     correct += item['flag']
+        #     prec.append(float(correct) / (i + 1))
+        #     recall.append(float(correct) / self.test_data_loader.relfact_tot)
+        # auc = sklearn.metrics.auc(x=recall, y=prec)
+        # print("\n[TEST] auc: {}".format(auc))
+        # print("Finish testing")
+        # self.cur_prec = prec
+        # self.cur_recall = recall
+        #
+        # if not return_result:
+        #     return auc
+        # else:
+        #     return (auc, pred_result)
+        return  pred_result
 
-        if not return_result:
-            return auc
-        else:
-            return (auc, pred_result)
 
