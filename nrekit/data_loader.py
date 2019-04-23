@@ -182,7 +182,7 @@ class json_file_data_loader(file_data_loader):
         print("Finish loading")
         return True
 
-    def __init__(self, file_name, word_vec_file_name, rel2id_file_name, mode, shuffle=True, max_length=120, case_sensitive=False, reprocess=False, batch_size=4):# batch_size=160
+    def __init__(self, file_name, word_vec_file_name, rel2id_file_name, mode, shuffle=True, max_length=120, case_sensitive=False, reprocess=False, batch_size=160):# batch_size=160
         '''
         file_name: Json file storing the data in the following format
             [
@@ -289,14 +289,18 @@ class json_file_data_loader(file_data_loader):
             last_relfact = ''
             last_relfact_pos = -1
             for i in range(self.instance_tot):
+                ###关系判断处理
                 ins = self.ori_data[i]
                 if ins['relation'] in self.rel2id:
+                    #rel2id根据键取值取到的是类别
                     self.data_rel[i] = self.rel2id[ins['relation']]
                 else:
                     self.data_rel[i] = self.rel2id['NA']
-                sentence = ' '.join(ins['sentence'].split()) # delete extra spaces
+                sentence = ' '.join(ins['sentence'].split()) # delete extra spaces,即>=1个空格，都变成1个空格
                 head = ins['head']['word']
                 tail = ins['tail']['word']
+
+                ###成对的实体和关系
                 cur_entpair = ins['head']['id'] + '#' + ins['tail']['id']
                 cur_relfact = ins['head']['id'] + '#' + ins['tail']['id'] + '#' + ins['relation']
                 if cur_entpair != last_entpair:
