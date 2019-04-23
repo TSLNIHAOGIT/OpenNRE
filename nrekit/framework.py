@@ -324,7 +324,25 @@ class re_framework:
 
         for i, batch_data in enumerate(self.test_data_loader):
             iter_logit = self.one_step(self.sess, model, batch_data, [model.test_logit()])[0]
-            print('iter_logit[0:5]',iter_logit[0:5])
+            #每个batch都显示前5个
+            # print('iter_logit[0:5]',iter_logit[0:5])
+            '''
+             [[9.97480333e-01 2.17990146e-05 6.60152000e-06 9.55261930e-06
+              9.10787367e-06 7.95351934e-06 3.05005437e-04 7.50102618e-06
+              4.86199788e-05 4.12994596e-05 1.07697651e-05 1.11595091e-05
+              1.56151818e-05 2.71198187e-05 7.40599035e-06 7.93545678e-06
+              9.13013719e-06 5.95621495e-05 1.03029066e-04 6.66461256e-06
+              7.03397973e-06 8.99474435e-06 5.68438918e-06 1.25890248e-04
+              4.82736468e-05 9.75836792e-06 8.20632795e-06 8.19734851e-06
+              2.14789470e-05 1.42115314e-04 6.41827501e-06 7.75515946e-06
+              6.07105267e-06 7.06387073e-05 1.09015391e-05 2.76608007e-05
+              5.68756986e-05 5.18244997e-05 8.44444639e-06 7.80242226e-06
+              8.14736632e-06 8.11007885e-06 9.66413518e-06 1.65637903e-05
+              7.90218292e-06 1.20347022e-05 8.97473728e-06 2.17275756e-05
+              2.54643615e-04 1.06506513e-05 7.77168840e-04 1.57734139e-05
+              1.24776561e-05]
+
+            '''
             iter_output = iter_logit.argmax(-1)
             # iter_correct = (iter_output == batch_data['rel']).sum()
             # iter_not_na_correct = np.logical_and(iter_output == batch_data['rel'], batch_data['rel'] != 0).sum()
@@ -337,6 +355,7 @@ class re_framework:
             #         i, float(tot_not_na_correct) / tot_not_na, float(tot_correct) / tot))
             #     sys.stdout.flush()
             for idx in range(len(iter_logit)):
+                #除去0类，看剩余的类概率80%都是na类别
                 # for rel in range(1, self.test_data_loader.rel_tot):
 
                     # test_result.append({'score': iter_logit[idx][iter_output[idx]], 'flag': batch_data['multi_rel'][idx][iter_output[idx]]})

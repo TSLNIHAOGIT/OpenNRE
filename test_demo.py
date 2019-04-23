@@ -36,17 +36,31 @@ test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
 framework = nrekit.framework.re_framework(train_loader, test_loader)
 
 
-class MyEncoder(json.JSONEncoder):
+# class MyEncoder(json.JSONEncoder):
+#
+#     def default(self, obj):
+#         """
+#         只要检查到了是bytes类型的数据就把它转为str类型
+#         :param obj:
+#         :return:
+#         """
+#         if isinstance(obj, bytes):
+#             return str(obj, encoding='utf-8')
+#         return json.JSONEncoder.default(self, obj)
 
+class MyEncoder(json.JSONEncoder):
     def default(self, obj):
-        """
-        只要检查到了是bytes类型的数据就把它转为str类型
-        :param obj:
-        :return:
-        """
-        if isinstance(obj, bytes):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif isinstance(obj, bytes):
             return str(obj, encoding='utf-8')
-        return json.JSONEncoder.default(self, obj)
+        else:
+            return json.JSONEncoder.default(self, obj)
+            # return super(MyEncoder, self).default(obj)
 
 class model(nrekit.framework.re_model):
     encoder = "pcnn"
