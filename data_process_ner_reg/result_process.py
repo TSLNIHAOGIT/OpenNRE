@@ -2,8 +2,10 @@ import json
 import pandas as pd
 ''':START_ID	role	:END_ID
 '''
-with open('../data/label_test_relation.json') as f:
+with open('../data/label_test_relation_new.json') as f:
     test_label_new={}
+    word_ll={}
+    all_wrod_ll=[]
     test_label=json.load(f)
     # print(' test_label', test_label)
     for each in test_label:
@@ -12,8 +14,38 @@ with open('../data/label_test_relation.json') as f:
         test_label_new[id]=pair_etity
         # print('test_label_new',test_label_new)
         # break
-with open('../data/rel2id.json') as f:
 
+        word_ll['entity:ID'] = each['head']['id']
+        word_ll['entity']=each['head']['word']#,each['tail']['word']
+        word_ll[':LABEL']=each['head']['label']
+
+        all_wrod_ll.append(word_ll)
+        word_ll = {}
+        word_ll['entity:ID'] = each['tail']['id']
+        word_ll['entity'] = each['tail']['word']  # ,each['tail']['word']
+        word_ll[':LABEL'] = each['tail']['label']
+        all_wrod_ll.append(word_ll)
+        word_ll = {}
+all_wrod_ll_df=pd.DataFrame(data=all_wrod_ll)
+print('all_wrod_ll_df',all_wrod_ll_df.head(20))
+
+per_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='PER']
+loc_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='LOC']
+org_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='ORG']
+
+per_df.to_csv('per.csv',index=False)
+loc_df.to_csv('loc.csv',index=False)
+org_df.to_csv('org.csv',index=False)
+
+
+
+
+# def create_nodes_by_label(test_label):
+#     {''}
+#     pass
+
+
+with open('../data/rel2id.json') as f:
     rel_dict=json.load(f)
     rel_new={value:key for key,value in rel_dict.items()}
     print('rel_new',rel_new)
