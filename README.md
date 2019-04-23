@@ -207,3 +207,30 @@ BiRNN | 0.3352 | 0.3575 | 0.3244
 3. **A Soft-label Method for Noise-tolerant Distantly Supervised Relation Extraction.** _Tianyu Liu, Kexiang Wang, Baobao Chang, Zhifang Sui._ EMNLP2017. [paper](http://aclweb.org/anthology/D17-1189)
 
 4. **Reinforcement Learning for Relation Classification from Noisy Data.** _Jun Feng, Minlie Huang, Li Zhao, Yang Yang, Xiaoyan Zhu._ AAAI2018. [paper](https://tianjun.me/static/essay_resources/RelationExtraction/Paper/AAAI2018Denoising.pdf)
+
+
+'''
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+Pre-processed files exist. Loading them...
+Finish loading
+Total relation fact: 18409
+Loading data file...
+Finish loading
+Loading word vector file...
+Finish loading
+Elimiating case sensitive problem...
+Finish eliminating
+Sort data...
+Finish sorting
+Got 114042 words of 50 dims
+Building word vector matrix and mapping...
+Finish building
+Pre-processing data...
+Finish pre-processing
+Storing processed files...
+Finish storing
+Total relation fact: 1950
+Testing...
+
+'''
