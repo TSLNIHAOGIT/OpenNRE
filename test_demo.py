@@ -130,6 +130,9 @@ if __name__=='__main__':
 
     pred_result=framework.predict(model, ckpt=checkpoint_path
                                   , return_result=True)
+    print('pred_result:')
+    for i in range(100):
+        print(pred_result[i])
 
 
     #先不保存结果看一下
