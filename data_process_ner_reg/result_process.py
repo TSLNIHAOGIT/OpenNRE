@@ -10,7 +10,7 @@ with open('../data/label_test_relation_new.json') as f:
     # print(' test_label', test_label)
     for each in test_label:
         id=each['head']['id']+'#'+each['tail']['id']
-        pair_etity=(each['head']['word'],each['tail']['word'])
+        pair_etity=(each['head']['id'],each['tail']['id'])
         test_label_new[id]=pair_etity
         # print('test_label_new',test_label_new)
         # break
