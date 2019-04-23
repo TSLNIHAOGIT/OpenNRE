@@ -24,7 +24,7 @@ train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir
                                                         mode=nrekit.data_loader.json_file_data_loader.MODE_RELFACT_BAG,
                                                         shuffle=True)
 test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
-                                                                    'label_test_relation.json',
+                                                                    'label_test_relation_norel.json',
                                                                     # 'test-reading-friendly.json',
                                                                     # 'test.json'
                                                                     ),
