@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+from data_process_ner_reg.df_eg import merge_dup_id
 ''':START_ID	role	:END_ID
 '''
 with open('../data/label_test_relation_new.json') as f:
@@ -26,8 +27,15 @@ with open('../data/label_test_relation_new.json') as f:
         word_ll[':LABEL'] = each['tail']['label']
         all_wrod_ll.append(word_ll)
         word_ll = {}
-all_wrod_ll_df=pd.DataFrame(data=all_wrod_ll)
-print('all_wrod_ll_df',all_wrod_ll_df.head(20))
+all_wrod_ll_df=pd.DataFrame(data=all_wrod_ll).drop_duplicates()
+print('all_wrod_ll_df',all_wrod_ll_df.head(10))
+
+# print('all_wrod_ll_df shape',all_wrod_ll_df.shape)
+# print('all_wrod_ll_df[entity:ID].nunique()',all_wrod_ll_df['entity:ID'].nunique())
+
+
+all_wrod_ll_df=merge_dup_id(all_wrod_ll_df,col=['entity:ID', 'entity',':LABEL'])
+print('df_final\n',all_wrod_ll_df.head(10))
 
 
 ##neo4j导入识别，看log是标注的问题，同一个实体，在不同的位置，
@@ -37,11 +45,12 @@ print('all_wrod_ll_df',all_wrod_ll_df.head(20))
 per_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='PER']
 loc_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='LOC']
 org_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='ORG']
+other_df=all_wrod_ll_df[ (all_wrod_ll_df[':LABEL']!='PER')&(all_wrod_ll_df[':LABEL']!='LOC')&(all_wrod_ll_df[':LABEL']!='ORG')]
 
-per_df.drop_duplicates().to_csv('per.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-loc_df.drop_duplicates().to_csv('loc.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-org_df.drop_duplicates().to_csv('org.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-
+per_df.to_csv('per.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+loc_df.to_csv('loc.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+org_df.to_csv('org.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+other_df.to_csv('other.csv',columns=['entity:ID','entity',':LABEL'],index=False)
 
 
 
