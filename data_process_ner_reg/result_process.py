@@ -29,13 +29,18 @@ with open('../data/label_test_relation_new.json') as f:
 all_wrod_ll_df=pd.DataFrame(data=all_wrod_ll)
 print('all_wrod_ll_df',all_wrod_ll_df.head(20))
 
+
+##neo4j导入识别，看log是标注的问题，同一个实体，在不同的位置，
+# 有点有的label是org有的label是Loc
+#此种情况是同一个实体有多个label,要用逗号分隔
+
 per_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='PER']
 loc_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='LOC']
 org_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='ORG']
 
-per_df.to_csv('per.csv',index=False)
-loc_df.to_csv('loc.csv',index=False)
-org_df.to_csv('org.csv',index=False)
+per_df.drop_duplicates().to_csv('per.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+loc_df.drop_duplicates().to_csv('loc.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+org_df.drop_duplicates().to_csv('org.csv',columns=['entity:ID','entity',':LABEL'],index=False)
 
 
 
@@ -67,11 +72,12 @@ with open('../test_result/nyt_pcnn_att_pred_new.json') as f:
             print('\n')
             each_entitiy_pair[':START_ID']=test_label_new[each['entpair']][0]
             each_entitiy_pair[':END_ID'] = test_label_new[each['entpair']][1]
-            each_entitiy_pair['entity_relation'] = rel_new[each['relation']]
+            each_entitiy_pair[':TYPE'] = rel_new[each['relation']]
             all_data.append(each_entitiy_pair)
 
 df=pd.DataFrame(data=all_data).drop_duplicates()
-df.to_csv('entity_pair_relations.csv',index=False)
+
+df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
 # print(df.drop_duplicates())
 
 
