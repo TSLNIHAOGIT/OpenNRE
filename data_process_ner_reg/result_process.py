@@ -37,22 +37,26 @@ print('all_wrod_ll_df',all_wrod_ll_df.head(10))
 all_wrod_ll_df=merge_dup_id(all_wrod_ll_df,col=['entity:ID', 'entity',':LABEL'])
 print('df_final\n',all_wrod_ll_df.head(10))
 
-
-##neo4j导入识别，看log是标注的问题，同一个实体，在不同的位置，
-# 有点有的label是org有的label是Loc
-#此种情况是同一个实体有多个label,要用逗号分隔
-
-per_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='PER']
-loc_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='LOC']
-org_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='ORG']
-other_df=all_wrod_ll_df[ (all_wrod_ll_df[':LABEL']!='PER')&(all_wrod_ll_df[':LABEL']!='LOC')&(all_wrod_ll_df[':LABEL']!='ORG')]
-
-per_df.to_csv('per.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-loc_df.to_csv('loc.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-org_df.to_csv('org.csv',columns=['entity:ID','entity',':LABEL'],index=False)
-other_df.to_csv('other.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+##可以只用一个包含所有label的大表或者多用几个小表
+all_wrod_ll_df.to_csv('all_labels.csv',columns=['entity:ID','entity',':LABEL'],index=False)
 
 
+
+# ##neo4j导入识别，看log是标注的问题，同一个实体，在不同的位置，
+# # 有点有的label是org有的label是Loc
+# #此种情况是同一个实体有多个label,要用逗号分隔
+#
+# per_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='PER']
+# loc_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='LOC']
+# org_df=all_wrod_ll_df[all_wrod_ll_df[':LABEL']=='ORG']
+# other_df=all_wrod_ll_df[ (all_wrod_ll_df[':LABEL']!='PER')&(all_wrod_ll_df[':LABEL']!='LOC')&(all_wrod_ll_df[':LABEL']!='ORG')]
+#
+# per_df.to_csv('per.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+# loc_df.to_csv('loc.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+# org_df.to_csv('org.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+# other_df.to_csv('other.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+#
+#
 
 # def create_nodes_by_label(test_label):
 #     {''}
@@ -90,5 +94,3 @@ df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],in
 # print(df.drop_duplicates())
 
 
-        # if index>5:
-        #     break
