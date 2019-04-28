@@ -10,7 +10,9 @@ def word_embedding(word, word_vec_mat, var_scope=None, word_embedding_dim=50, ad
                                             initializer=tf.contrib.layers.xavier_initializer()),
                                         tf.constant(np.zeros((1, word_embedding_dim), dtype=np.float32))], 0)
         x = tf.nn.embedding_lookup(word_embedding, word)
-        return x
+        return
+
+
 
 def pos_embedding(pos1, pos2, var_scope=None, pos_embedding_dim=5, max_length=120):
     with tf.variable_scope(var_scope or 'pos_embedding', reuse=tf.AUTO_REUSE):
