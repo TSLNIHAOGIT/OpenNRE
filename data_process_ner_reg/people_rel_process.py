@@ -1,13 +1,34 @@
 
 import json
 import pickle
-# df=pd.read_csv('../data/train_people_relation.txt',delimiter='\t')
+import pandas as pd
+import thulac
+import numpy as np
+import json
+# 生成词向量
+thu1 = thulac.thulac(seg_only=True)  #默认模式
+text = thu1.cut("工商注册地、税务征管关系及统计关系在广州市南沙区范围内", text=True)  #进行一句话分词
+print(text)
+
+df=pd.read_csv('../data/train_people_relation.txt',delimiter='\t')
 # print(df['rel'].value_counts())
 
 
 # for each in df['sentence'].head():
 #     print(each)
+
+# with open('../data/sgns.baidubaike.bigram-char',encoding='utf8') as f:
+#     all_lines=f.read()
+#     all_lines_split=all_lines.split('\n')
+#     print(len(all_lines_split))
+
+
+
+
+
 word_vec_new=[]
+
+
 with open('../data/sgns.baidubaike.bigram-char',encoding='utf8') as f:
 
     for index ,each0 in enumerate(f):
