@@ -45,8 +45,8 @@ class npy_data_loader(file_data_loader):
             self.scope[i][1] += 1
 
         self.instance_tot = self.data_word.shape[0]
-        ##关系类别,转为自己的数据时需要修改
-        self.rel_tot = 53
+        ##关系类别,转为自己的数据时需要修改；原来是53
+        self.rel_tot = 35
 
         if self.mode == self.MODE_INSTANCE:
             self.order = list(range(self.instance_tot))
@@ -223,7 +223,7 @@ class json_file_data_loader(file_data_loader):
         self.mode = mode
         self.shuffle = shuffle
         self.batch_size = batch_size
-        self.rel2id = json.load(open(rel2id_file_name))
+        self.rel2id = json.load(open(rel2id_file_name,encoding='utf8'))
 
         if reprocess or not self._load_preprocessed_file(): # Try to load pre-processed files:
             # Check files
@@ -234,10 +234,10 @@ class json_file_data_loader(file_data_loader):
 
             # Load files
             print("Loading data file...")
-            self.ori_data = json.load(open(self.file_name, "r"))
+            self.ori_data = json.load(open(self.file_name, "r",encoding='utf8'))
             print("Finish loading")
             print("Loading word vector file...")
-            self.ori_word_vec = json.load(open(self.word_vec_file_name, "r"))
+            self.ori_word_vec = json.load(open(self.word_vec_file_name, "r",encoding='utf8'))
             print("Finish loading")
             
             # Eliminate case sensitive
@@ -256,44 +256,26 @@ class json_file_data_loader(file_data_loader):
             print("Finish sorting")
        
             # Pre-process word vec
-            if isinstance(self.ori_word_vec,list):
-                self.word2id = {}
-                self.word_vec_tot = len(self.ori_word_vec)
-                UNK = self.word_vec_tot#unk的id放在高频词汇的后面
-                BLANK = self.word_vec_tot + 1
-                self.word_vec_dim = len(self.ori_word_vec[0]['vec'])
-                print("Got {} words of {} dims".format(self.word_vec_tot, self.word_vec_dim))
+            self.word2id = {}
+            self.word_vec_tot = len(self.ori_word_vec)
+            UNK = self.word_vec_tot#unk的id放在高频词汇的后面
+            BLANK = self.word_vec_tot + 1
+            self.word_vec_dim = len(self.ori_word_vec[0]['vec'])
+            print("Got {} words of {} dims".format(self.word_vec_tot, self.word_vec_dim))
 
 
-                print("Building word vector matrix and mapping...")
-                self.word_vec_mat = np.zeros((self.word_vec_tot, self.word_vec_dim), dtype=np.float32)
-                for cur_id, word in enumerate(self.ori_word_vec):
-                    w = word['word']
-                    if not case_sensitive:
-                        w = w.lower()
-                    self.word2id[w] = cur_id
-                    self.word_vec_mat[cur_id, :] = word['vec']
-                self.word2id['UNK'] = UNK
-                self.word2id['BLANK'] = BLANK
-                print("Finish building")
-            else:
-                self.word2id = {}
-                # self.word_vec_tot = len(self.ori_word_vec)
-                UNK = self.word_vec_tot
-                BLANK = self.word_vec_tot + 1
-                self.word_vec_dim = len(self.ori_word_vec[0]['vec'])
-                print("Got {} words of {} dims".format(self.word_vec_tot, self.word_vec_dim))
-                print("Building word vector matrix and mapping...")
-                self.word_vec_mat = np.zeros((self.word_vec_tot, self.word_vec_dim), dtype=np.float32)
-                for cur_id, word in enumerate(self.ori_word_vec):
-                    w = word['word']
-                    if not case_sensitive:
-                        w = w.lower()
-                    self.word2id[w] = cur_id
-                    self.word_vec_mat[cur_id, :] = word['vec']
-                self.word2id['UNK'] = UNK
-                self.word2id['BLANK'] = BLANK
-                print("Finish building")
+            print("Building word vector matrix and mapping...")
+            self.word_vec_mat = np.zeros((self.word_vec_tot, self.word_vec_dim), dtype=np.float32)
+            for cur_id, word in enumerate(self.ori_word_vec):
+                w = word['word']
+                if not case_sensitive:
+                    w = w.lower()
+                self.word2id[w] = cur_id
+                self.word_vec_mat[cur_id, :] = word['vec']
+            self.word2id['UNK'] = UNK
+            self.word2id['BLANK'] = BLANK
+            print("Finish building")
+            #
 
             # Pre-process data
             print("Pre-processing data...")

@@ -1,7 +1,8 @@
 import tensorflow as tf
 import numpy as np
 
-def word_embedding(word, word_vec_mat, var_scope=None, word_embedding_dim=50, add_unk_and_blank=True):
+#word_embedding_dim原来为50，现在改为300
+def word_embedding(word, word_vec_mat, var_scope=None, word_embedding_dim=300, add_unk_and_blank=True):
     with tf.variable_scope(var_scope or 'word_embedding', reuse=tf.AUTO_REUSE):
         word_embedding = tf.get_variable('word_embedding', initializer=word_vec_mat, dtype=tf.float32)
         if add_unk_and_blank:
