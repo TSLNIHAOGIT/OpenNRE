@@ -259,7 +259,7 @@ class json_file_data_loader(file_data_loader):
             if isinstance(self.ori_word_vec,list):
                 self.word2id = {}
                 self.word_vec_tot = len(self.ori_word_vec)
-                UNK = self.word_vec_tot
+                UNK = self.word_vec_tot#unk的id放在高频词汇的后面
                 BLANK = self.word_vec_tot + 1
                 self.word_vec_dim = len(self.ori_word_vec[0]['vec'])
                 print("Got {} words of {} dims".format(self.word_vec_tot, self.word_vec_dim))
