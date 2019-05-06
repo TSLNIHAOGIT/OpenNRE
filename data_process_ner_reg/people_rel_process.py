@@ -80,11 +80,11 @@ def get_pretrained_vec():
     #      print(data)
 
 def convert_people_train():
-    path = '../open_data/sent_train.txt'
+    path = '../open_data/sent_dev.txt'
     df=pd.read_csv(path,delimiter='\t',header=-1,names=['id','e1','e2','sentence'])
     print(df.head())
 
-    df_rel=pd.read_csv('../open_data/sent_relation_train.txt',delimiter='\t',header=-1,names=['rel_id','class'])
+    df_rel=pd.read_csv('../open_data/sent_relation_dev.txt',delimiter='\t',header=-1,names=['rel_id','class'])
     print('df_rel.head',df_rel.head())
     with open('../data/rel2id_people.json',encoding='utf8') as f:
       rel2id=json.load(f)
@@ -121,7 +121,7 @@ def convert_people_train():
         # print('each_train',each_train)
         all_train.append(each_train)
 
-    with open('../data/train_people.json','w',encoding='utf8') as f:
+    with open('../data/dev_people.json','w',encoding='utf8') as f:
         #两种效果一样
         ## f.write(json.dumps(all_rel_data,indent=4))
         json.dump(all_train,f,ensure_ascii=False,indent=4)
@@ -146,11 +146,12 @@ def convert_people_rel2id():
     pass
 if __name__=='__main__':
     # convert_people_rel2id()
-    # convert_people_train()
-    with open('../data/train_people.json',encoding='utf8') as f:
-        # 两种效果一样
-        ## f.write(json.dumps(all_rel_data,indent=4))
-        list_data=json.load(f)
-        print(list_data[-10:-1])
+    convert_people_train()
+
+    # with open('../data/train_people.json',encoding='utf8') as f:
+    #     # 两种效果一样
+    #     ## f.write(json.dumps(all_rel_data,indent=4))
+    #     list_data=json.load(f)
+    #     print(list_data[-10:-1])
     pass
 

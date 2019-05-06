@@ -18,18 +18,18 @@ dataset_dir='./data'
 #     raise Exception("[ERROR] Dataset dir %s doesn't exist!" % (dataset_dir))
 
 # The first 3 parameters are train / test data file name, word embedding file name and relation-id mapping file name respectively.
-train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'train.json'), 
-                                                        os.path.join(dataset_dir, 'word_vec.json'),
-                                                        os.path.join(dataset_dir, 'rel2id.json'), 
+train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'train_people.json'),
+                                                        os.path.join(dataset_dir, 'word_vec_people.json'),
+                                                        os.path.join(dataset_dir, 'rel2id_people.json'),
                                                         mode=nrekit.data_loader.json_file_data_loader.MODE_RELFACT_BAG,
                                                         shuffle=True)
 test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
-                                                                    'label_test_relation_new.json',
+                                                                    # 'label_test_relation_new.json',
                                                                     # 'test-reading-friendly.json',
-                                                                    # 'test.json'
+                                                                    'dev_people.json'
                                                                     ),
-                                                       os.path.join(dataset_dir, 'word_vec.json'),
-                                                       os.path.join(dataset_dir, 'rel2id.json'), 
+                                                       os.path.join(dataset_dir, 'word_vec_people.json'),
+                                                       os.path.join(dataset_dir, 'rel2id_people.json'),
                                                        mode=nrekit.data_loader.json_file_data_loader.MODE_ENTPAIR_BAG,
                                                        shuffle=False)
 
@@ -139,11 +139,12 @@ checkpoint_path=  tf.train.latest_checkpoint('./checkpoint/')
 
 if __name__=='__main__':
     # auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
-    # auc, pred_result = framework.test(model, ckpt=checkpoint_path
-    #                               , return_result=True)
-
-    pred_result=framework.predict(model, ckpt=checkpoint_path
+    auc, pred_result = framework.test(model, ckpt=checkpoint_path
                                   , return_result=True)
+    print('auc',auc)
+
+    # pred_result=framework.predict(model, ckpt=checkpoint_path
+    #                               , return_result=True)
     print('pred_result:')
     for i in range(100):
         print(pred_result[i])
