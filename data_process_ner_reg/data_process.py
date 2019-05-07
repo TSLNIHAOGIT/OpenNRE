@@ -159,7 +159,8 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
-    with open('../data/train.json') as f:
+ with open('../data/train.json') as f:
+    with open(save_path + 'train.txt', 'a+', encoding='utf8', errors='ignore') as f_save:
         json_data = json.load(f)
         for each in json_data:
             relation = each['relation']
@@ -191,12 +192,13 @@ def construct_Entity_label_Bioes():
                 else:
                     res=each.replace('___',' ')
                 print(res,)
-                with open(save_path+'train.txt','a+',encoding='utf8',errors='ignore') as f_save:
-                    if res!='. O':
-                        f_save.write(res+'\n')#'\r\n是换两行了
-                    else:
-                        f_save.write(res+'\n')
-                        f_save.write('\n')
+                #不能放在这里不然多次打开与关闭
+                # with open(save_path+'train.txt','a+',encoding='utf8',errors='ignore') as f_save:
+                if res!='. O':
+                    f_save.write(res+'\n')#'\r\n是换两行了
+                else:
+                    f_save.write(res+'\n')
+                    f_save.write('\n')
             # break
 
 if __name__=='__main__':

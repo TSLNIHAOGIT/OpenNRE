@@ -169,7 +169,8 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
-    with open('../data/train_people.json',encoding='utf8') as f:#../data/train.json
+ with open('../data/train_people.json',encoding='utf8') as f:#../data/train.json
+    with open(save_path + 'train.txt', 'a+', encoding='utf8', errors='ignore') as f_save:
         json_data = json.load(f)
         for each in json_data:
             relation = each['relation']
@@ -207,19 +208,25 @@ def construct_Entity_label_Bioes():
             # sentence=' '.join(sentence)
 
             for each in new_sentence.split(' '):
-                if '___' not in each :
-                    for e in each:
-                         res='{} O'.format(e)
-                else:
-                    res=each.replace('___',' ')
-                print(res,)
-                with open(save_path+'train.txt','a+',encoding='utf8',errors='ignore') as f_save:
-                    if res!='. O':
-                        f_save.write(res+'\n')#'\r\n是换两行了
+                    if '___' not in each :
+                        for e in each:
+                             res='{} O'.format(e)
+                             print(res, )
+                             if res != '. O':
+                                f_save.write(res + '\n')  # '\r\n是换两行了
+                             else:
+                                f_save.write(res + '\n')
+                                f_save.write('\n')
                     else:
-                        f_save.write(res+'\n')
-                        f_save.write('\n')
-            # break
+                        res=each.replace('___',' ')
+                        print(res,)
+
+                        if res!='. O':
+                            f_save.write(res+'\n')#'\r\n是换两行了
+                        else:
+                            f_save.write(res+'\n')
+                            f_save.write('\n')
+                # break
 
 if __name__=='__main__':
     # relat_process()
