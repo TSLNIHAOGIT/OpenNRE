@@ -212,7 +212,7 @@ def construct_Entity_label_Bioes():
                         for e in each:
                              res='{} O'.format(e)
                              print(res, )
-                             if res != '. O':
+                             if res != '. O' and res != '。 O':
                                 f_save.write(res + '\n')  # '\r\n是换两行了
                              else:
                                 f_save.write(res + '\n')
