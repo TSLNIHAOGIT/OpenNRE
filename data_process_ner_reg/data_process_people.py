@@ -169,8 +169,8 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
- with open('../data/train_people.json',encoding='utf8') as f:#../data/train.json
-    with open(save_path + 'train.txt', 'a+', encoding='utf8', errors='ignore') as f_save:
+ with open('../data/dev_people.json',encoding='utf8') as f:#../data/train.json
+    with open(save_path + 'test.txt', 'a+', encoding='utf8', errors='ignore') as f_save:
         json_data = json.load(f)
         for each in json_data:
             relation = each['relation']
