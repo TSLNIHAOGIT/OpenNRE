@@ -20,7 +20,7 @@ train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir
                                                         os.path.join(dataset_dir, 'rel2id_people.json'),
                                                         mode=nrekit.data_loader.json_file_data_loader.MODE_RELFACT_BAG,
                                                         shuffle=True)
-test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'train_people.json'),
+test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'dev_people.json'),
                                                        os.path.join(dataset_dir, 'word_vec_people.json'),
                                                        os.path.join(dataset_dir, 'rel2id_people.json'),
                                                        mode=nrekit.data_loader.json_file_data_loader.MODE_ENTPAIR_BAG,
@@ -114,6 +114,8 @@ class model(nrekit.framework.re_model):
 
 model.encoder='pcnn'
 model.selector='att'
+
+#用rl时会用test进行帮助
 use_rl = True
 
 
