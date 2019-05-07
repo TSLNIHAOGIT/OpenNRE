@@ -16,14 +16,14 @@ with open('../data/label_test_relation_new.json') as f:
         # print('test_label_new',test_label_new)
         # break
 
-        word_ll['entity:ID'] = each['head']['id']
-        word_ll['entity']=each['head']['word']#,each['tail']['word']
+        word_ll['entityid:ID'] = each['head']['id']
+        word_ll['myentity']=each['head']['word']#,each['tail']['word']
         word_ll[':LABEL']=each['head']['label']
 
         all_wrod_ll.append(word_ll)
         word_ll = {}
-        word_ll['entity:ID'] = each['tail']['id']
-        word_ll['entity'] = each['tail']['word']  # ,each['tail']['word']
+        word_ll['entityid:ID'] = each['tail']['id']
+        word_ll['myentity'] = each['tail']['word']  # ,each['tail']['word']
         word_ll[':LABEL'] = each['tail']['label']
         all_wrod_ll.append(word_ll)
         word_ll = {}
@@ -34,11 +34,11 @@ print('all_wrod_ll_df',all_wrod_ll_df.head(10))
 # print('all_wrod_ll_df[entity:ID].nunique()',all_wrod_ll_df['entity:ID'].nunique())
 
 
-all_wrod_ll_df=merge_dup_id(all_wrod_ll_df,col=['entity:ID', 'entity',':LABEL'])
+all_wrod_ll_df=merge_dup_id(all_wrod_ll_df,col=['entityid:ID', 'myentity',':LABEL'])
 print('df_final\n',all_wrod_ll_df.head(10))
 
 ##可以只用一个包含所有label的大表或者多用几个小表
-all_wrod_ll_df.to_csv('all_labels.csv',columns=['entity:ID','entity',':LABEL'],index=False)
+all_wrod_ll_df.to_csv('all_labels.csv',columns=['entityid:ID','myentity',':LABEL'],index=False)
 
 
 
