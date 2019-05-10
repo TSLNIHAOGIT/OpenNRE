@@ -3,7 +3,7 @@ import pandas as pd
 from data_process_ner_reg.df_eg import merge_dup_id
 ''':START_ID	role	:END_ID
 '''
-with open('../data/label_test_relation_new.json') as f:
+with open('../data/label_test_relation.json') as f:
     test_label_new={}
     word_ll={}
     all_wrod_ll=[]
@@ -63,7 +63,7 @@ all_wrod_ll_df.to_csv('all_labels.csv',columns=['entityid:ID','myentity',':LABEL
 #     pass
 
 
-with open('../data/rel2id.json') as f:
+with open('../data/rel2id_people.json') as f:
     rel_dict=json.load(f)
     rel_new={value:key for key,value in rel_dict.items()}
     print('rel_new',rel_new)
@@ -72,7 +72,7 @@ with open('../data/rel2id.json') as f:
 ''':START_ID	role	:END_ID
 '''
 
-with open('../test_result/nyt_pcnn_att_pred_new.json') as f:
+with open('../test_result/nyt_pcnn_att_pred.json') as f:
     list_pred=json.load(f)
     print(len(list_pred))
     all_data=[]
