@@ -1,5 +1,8 @@
 import json
 import pandas as pd
+import os
+import sys
+sys.path.insert(0,os.path.abspath(os.path.join(os.path.dirname('__file__'),'..')))
 from data_process_ner_reg.df_eg import merge_dup_id
 ''':START_ID	role	:END_ID
 '''
