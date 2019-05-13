@@ -15,17 +15,17 @@ with open('../data/train_people.json',encoding='utf8') as f:
     test_label=json.load(f)
     # print(' test_label', test_label)
     for each in test_label:
-        id=each['head']['id']+'#'+each['tail']['id']
-        pair_etity=(each['head']['id'],each['tail']['id'])
+        # id=each['head']['id']+'#'+each['tail']['id']
+        # pair_etity=(each['head']['id'],each['tail']['id'])
 
-        # id = each['head']['word'] + '#' + each['tail']['word']
-        # pair_etity = (each['head']['word'], each['tail']['word'])
+        id = each['head']['id'] + '#' + each['tail']['id']
+        pair_etity = (each['head']['word'], each['tail']['word'])
 
         test_label_new[id]=pair_etity
         # print('test_label_new',test_label_new)
         # break
 
-        word_ll['entityid:ID'] = each['head']['id']
+        word_ll['entityid:ID'] = each['head']['word']
         word_ll['myentity']=each['head']['word']#,each['tail']['word']
 
         # word_ll[':LABEL']=each['head']['label']
@@ -33,7 +33,7 @@ with open('../data/train_people.json',encoding='utf8') as f:
 
         all_wrod_ll.append(word_ll)
         word_ll = {}
-        word_ll['entityid:ID'] = each['tail']['id']
+        word_ll['entityid:ID'] = each['tail']['word']
         word_ll['myentity'] = each['tail']['word']  # ,each['tail']['word']
         # word_ll[':LABEL'] = each['tail']['label']
         word_ll[':LABEL'] = 'PER'
