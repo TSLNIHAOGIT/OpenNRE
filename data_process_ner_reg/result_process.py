@@ -82,9 +82,11 @@ with open('../test_result/nyt_pcnn_att_pred.json',encoding='utf8') as f:
 
     for index,each in enumerate(list_pred):
         each_entitiy_pair = {}
+
+        #当预测全为0时，就不走下面流程了
         if each['relation']!=0:
-            print(each)
-            print(test_label_new[each['entpair']],rel_new[each['relation']])
+            print('each',each)
+            print('test_label_new',test_label_new[each['entpair']],rel_new[each['relation']])
             print('\n')
             each_entitiy_pair[':START_ID']=test_label_new[each['entpair']][0]
             each_entitiy_pair[':END_ID'] = test_label_new[each['entpair']][1]
@@ -92,8 +94,8 @@ with open('../test_result/nyt_pcnn_att_pred.json',encoding='utf8') as f:
             all_data.append(each_entitiy_pair)
 
 df=pd.DataFrame(data=all_data).drop_duplicates()
-
-df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
+print('df',df.head())
+# df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
 # print(df.drop_duplicates())
 
 
