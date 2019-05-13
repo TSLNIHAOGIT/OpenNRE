@@ -20,25 +20,25 @@ def rel_process():
 
 
 
-def data_process(rel=None):
-    with open('../data/test.json') as f:
-        json_data=json.load(f)
-        times=0
-        for each in json_data:
-            #'/people/place_of_interment/interred_here','/time/event/locations',
-            if each['relation'] in ['/people/person/place_of_birth']:#rel_data:
-                # rel_data.remove(each['relation'])
-                print('times:',times)
-                print('sentence::',each['sentence'])
-                print('head entity::',each['head']['word'])
-                print('relation::',each['relation'])
-                print('tail entity::',each['tail']['word'])
-                print('\n')
-                times=times+1
-
-        # print(json_data)
-        # df=pd.DataFrame(data=json_data)
-        # print(df.head())
+# def data_process(rel=None):
+#     with open('../data/test.json') as f:
+#         json_data=json.load(f)
+#         times=0
+#         for each in json_data:
+#             #'/people/place_of_interment/interred_here','/time/event/locations',
+#             if each['relation'] in ['/people/person/place_of_birth']:#rel_data:
+#                 # rel_data.remove(each['relation'])
+#                 print('times:',times)
+#                 print('sentence::',each['sentence'])
+#                 print('head entity::',each['head']['word'])
+#                 print('relation::',each['relation'])
+#                 print('tail entity::',each['tail']['word'])
+#                 print('\n')
+#                 times=times+1
+#
+#         # print(json_data)
+#         # df=pd.DataFrame(data=json_data)
+#         # print(df.head())
 
 # with open('../../test_result/nyt_pcnn_att_pred.json') as f:
 #     json_data=json.load(f)
@@ -154,7 +154,7 @@ def entpair_label(head_Entity,tail_Entity,relation):
     return entpair_type(head_Entity, entity_head_tail_type[0], tail_Entity, entity_head_tail_type[1])
 
 def entpair_label_people(head_Entity,tail_Entity,relation):
-    entity_head_tail_type=rela_headtype_tailtype[relation]
+    # entity_head_tail_type=rela_headtype_tailtype[relation]
     return entpair_type(head_Entity, 'PER', tail_Entity, 'PER')
 
 
@@ -169,10 +169,13 @@ def relat_process():
         return json_data.keys()
 def construct_Entity_label_Bioes():
     # all_relations=set()
+#dev_people.json
  with open('../data/dev_people.json',encoding='utf8') as f:#../data/train.json
     with open(save_path + 'test.txt', 'a+', encoding='utf8', errors='ignore') as f_save:
         json_data = json.load(f)
         for each in json_data:
+            # f_save.write('\n' + '-DOCSTART-' + '\n')
+
             relation = each['relation']
 
         #显示所有的关系
@@ -206,8 +209,9 @@ def construct_Entity_label_Bioes():
 
             # sentence=list(sentence.replace(' ', ''))#去除分词后的中间空格,并转为list
             # sentence=' '.join(sentence)
-
-            for each in new_sentence.split(' '):
+            new_sentence_split=new_sentence.split(' ')
+            length=len(new_sentence_split)
+            for index,each in enumerate(new_sentence_split):
                     if '___' not in each :
                         for e in each:
                              res='{} O'.format(e)
@@ -215,8 +219,16 @@ def construct_Entity_label_Bioes():
                              if res != '. O' and res != '。 O':
                                 f_save.write(res + '\n')  # '\r\n是换两行了
                              else:
-                                f_save.write(res + '\n')
-                                f_save.write('\n')
+                                 #不在末尾才换行，在末尾不换行
+                                 if index==length-2:
+                                     f_save.write(res + '\n')
+                                 elif index!=length-1:
+                                    f_save.write(res + '\n')
+                                    #增加一行空格
+                                    f_save.write('\n')
+                                 else:
+                                    f_save.write(res + '\n')
+
                     else:
                         res=each.replace('___',' ')
                         print(res,)
@@ -224,9 +236,19 @@ def construct_Entity_label_Bioes():
                         if res!='. O':
                             f_save.write(res+'\n')#'\r\n是换两行了
                         else:
-                            f_save.write(res+'\n')
-                            f_save.write('\n')
+                            # 不在末尾才换行，且倒数第二个为句号也不换行，在末尾不换行
+                            # 不在末尾才换行，在末尾不换行
+                            if index == length - 2:
+                                f_save.write(res + '\n')
+                            elif index != length - 1:
+                                f_save.write(res + '\n')
+                                # 增加一行空格
+                                f_save.write('\n')
+                            else:
+                                f_save.write(res + '\n')
+
                 # break
+            f_save.write( '\n'+'-DOCSTART-' + '\n')
 
 if __name__=='__main__':
     # relat_process()
