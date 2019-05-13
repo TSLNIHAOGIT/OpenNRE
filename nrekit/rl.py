@@ -32,7 +32,7 @@ class policy_agent(framework.re_model):
         return self._test_logit
 
 class rl_re_framework(framework.re_framework):
-    def __init__(self, train_data_loader, test_data_loader, max_length=120, batch_size=16):
+    def __init__(self, train_data_loader, test_data_loader, max_length=120, batch_size=8):
         framework.re_framework.__init__(self, train_data_loader, test_data_loader, max_length, batch_size)
 
     def agent_one_step(self, sess, agent_model, batch_data, run_array, weights=1):
