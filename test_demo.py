@@ -142,12 +142,12 @@ checkpoint_path=  tf.train.latest_checkpoint('./checkpoint/')
 
 if __name__=='__main__':
     # auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
-    auc, pred_result = framework.test(model, ckpt=checkpoint_path
-                                  , return_result=True)
-    print('auc',auc)
-
-    # pred_result=framework.predict(model, ckpt=checkpoint_path
+    # auc, pred_result = framework.test(model, ckpt=checkpoint_path
     #                               , return_result=True)
+    # print('auc',auc)
+
+    pred_result=framework.predict(model, ckpt=checkpoint_path
+                                  , return_result=True)
     # print('pred_result:')
     # for i in range(100):
     #     print(pred_result[i])
