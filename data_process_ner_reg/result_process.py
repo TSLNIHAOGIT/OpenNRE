@@ -95,7 +95,7 @@ with open('../test_result/nyt_pcnn_att_pred.json',encoding='utf8') as f:
 
 df=pd.DataFrame(data=all_data).drop_duplicates()
 print('df',df.head())
-# df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
-# print(df.drop_duplicates())
+df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
+print(df.drop_duplicates())
 
 
