@@ -251,9 +251,9 @@ class json_file_data_loader(file_data_loader):
                 print("Finish eliminating")
 
             # Sort data by entities and relations
-            print("Sort data...")
-            self.ori_data.sort(key=lambda a: a['head']['id'] + '#' + a['tail']['id'] + '#' + a['relation'])
-            print("Finish sorting")
+            # print("Sort data...")
+            # self.ori_data.sort(key=lambda a: a['head']['id'] + '#' + a['tail']['id'] + '#' + a['relation'])
+            # print("Finish sorting")
        
             # Pre-process word vec
             self.word2id = {}
