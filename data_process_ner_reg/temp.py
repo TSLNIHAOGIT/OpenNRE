@@ -26,7 +26,20 @@
 #
 #         print(each_word,"***")
 
-sentence=list('张 韶 hj涵')
+# sentence=list('张 韶 hj涵')
+#
+# print(sentence)
+# print(len(sentence))
 
-print(sentence)
-print(len(sentence))
+import pandas as pd
+df=pd.read_csv('entity_pair_relations.csv')
+print(df.head())
+
+def process_rel(line):
+    line_split=line.split('/')
+    print(line_split)
+    return line_split[-1]
+df[':TYPE']=df[':TYPE'].apply(lambda x:process_rel(x))
+
+df.to_csv('entity_pair_relations_new.csv',index=False)
+print(df.head())
