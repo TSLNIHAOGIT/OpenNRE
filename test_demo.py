@@ -27,7 +27,7 @@ test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
                                                                     # 'label_test_relation_new.json',
                                                                     # 'test-reading-friendly.json',
                                                                     # 'dev_people.json',
-                                                                    'label_test_relation.json',
+                                                                    'label_test_relation_split.json',
                                                                     # 'train_people.json'
 
                                                                     ),

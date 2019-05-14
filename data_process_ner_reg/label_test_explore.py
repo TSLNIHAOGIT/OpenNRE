@@ -7,7 +7,7 @@ path='test.json'
 #         if index<5:
 #             print(each)
 
-path='../label_test_relation.json'
+path='../label_test_relation_split.json'
 '''
 test 172448
 '''

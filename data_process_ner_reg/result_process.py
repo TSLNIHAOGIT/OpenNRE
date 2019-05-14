@@ -7,7 +7,7 @@ from data_process_ner_reg.df_eg import merge_dup_id
 ''':START_ID	role	:END_ID
 '''
 # train_people.json
-# label_test_relation.json
+# label_test_relation_split.json
 with open('../data/train_people.json',encoding='utf8') as f:
     test_label_new={}
     word_ll={}
