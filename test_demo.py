@@ -146,6 +146,9 @@ model.selector='att'
 checkpoint_path=  tf.train.latest_checkpoint('./checkpoint/')
 
 if __name__=='__main__':
+    #注意要把_processed_data文件删除，让其重新生成
+    #因为里面既包含tran的文件也包含test的文件
+
     # auc, pred_result = framework.test(model, ckpt="./checkpoint/" + dataset_name + "_" + model.encoder + "_" + model.selector, return_result=True)
     # auc, pred_result = framework.test(model, ckpt=checkpoint_path
     #                               , return_result=True)

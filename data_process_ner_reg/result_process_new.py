@@ -104,8 +104,19 @@ with open('../test_result/nyt_pcnn_att_pred_train.json',encoding='utf8') as f:
             all_data.append(each_entitiy_pair)
 
 df=pd.DataFrame(data=all_data).drop_duplicates()
+
+
+#简化人物关系显示
+def process_rel(line):
+    line_split=line.split('/')
+    print(line_split)
+    return line_split[-1]
+df[':TYPE']=df[':TYPE'].apply(lambda x:process_rel(x))
+
 print('df',df.head())
 df.to_csv('entity_pair_relations.csv',columns=[':START_ID',':END_ID',':TYPE'],index=False)
 print(df.drop_duplicates())
+
+
 
 
