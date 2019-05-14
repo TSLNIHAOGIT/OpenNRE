@@ -37,6 +37,8 @@ test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
                                                        shuffle=False)
 
 print('test_loader',type(test_loader),test_loader)
+for i, batch_data in enumerate(test_loader):
+    print(i,batch_data)
 framework = nrekit.framework.re_framework(train_loader, test_loader)
 
 
