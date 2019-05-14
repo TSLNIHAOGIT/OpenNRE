@@ -36,6 +36,7 @@ test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir,
                                                        mode=nrekit.data_loader.json_file_data_loader.MODE_ENTPAIR_BAG,
                                                        shuffle=False)
 
+print('test_loader',type(test_loader),test_loader)
 framework = nrekit.framework.re_framework(train_loader, test_loader)
 
 

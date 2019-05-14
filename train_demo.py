@@ -20,7 +20,7 @@ train_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir
                                                         os.path.join(dataset_dir, 'rel2id_people.json'),
                                                         mode=nrekit.data_loader.json_file_data_loader.MODE_RELFACT_BAG,
                                                         shuffle=True)
-test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'dev_people.json'),
+test_loader = nrekit.data_loader.json_file_data_loader(os.path.join(dataset_dir, 'label_test_relation_split.json',),
                                                        os.path.join(dataset_dir, 'word_vec_people.json'),
                                                        os.path.join(dataset_dir, 'rel2id_people.json'),
                                                        mode=nrekit.data_loader.json_file_data_loader.MODE_ENTPAIR_BAG,
