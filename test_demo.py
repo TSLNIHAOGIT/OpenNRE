@@ -156,5 +156,5 @@ if __name__=='__main__':
     #先不保存结果看一下
     print("start save predict results")
     with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w') as outfile:
-        json.dump(pred_result, outfile,cls=MyEncoder)
+        json.dump(pred_result, outfile,cls=MyEncoder,ensure_ascii=False,indent=4)
 
