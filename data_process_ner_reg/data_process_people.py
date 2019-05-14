@@ -212,6 +212,8 @@ def construct_Entity_label_Bioes():
             new_sentence_split=new_sentence.split(' ')
             length=len(new_sentence_split)
             for index,each in enumerate(new_sentence_split):
+
+                    #不包含实体的部分，
                     if '___' not in each :
                         for e in each:
                              res='{} O'.format(e)
@@ -230,6 +232,7 @@ def construct_Entity_label_Bioes():
                                     f_save.write(res + '\n')
 
                     else:
+                        #实体部分
                         res=each.replace('___',' ')
                         print(res,)
 

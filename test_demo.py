@@ -155,6 +155,7 @@ if __name__=='__main__':
 
     #先不保存结果看一下
     print("start save predict results")
+    #open要加上encoding=utf8，否则后面的dump会报错
     with open('./test_result/' + dataset_name + "_" + model.encoder + "_" + model.selector + "_pred.json", 'w',encoding='utf8') as outfile:
         json.dump(pred_result, outfile,cls=MyEncoder,ensure_ascii=False,indent=4)
 
